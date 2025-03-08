@@ -80,7 +80,7 @@ public class LivroModel {
 
     @ManyToOne
     @JoinColumn(name = "genero_id_genero", nullable = true)
-    private GeneroModel genero;
+    private EnderecoModel genero;
 
 
     public LivroModel(){
@@ -89,7 +89,7 @@ public class LivroModel {
 
 
     public LivroModel(String titulo, String autor, String editora, Integer ano_publicacao, String isbn, Integer num_paginas, String sinopse, String idioma,
-    LocalDateTime data_cadastro, double preco, GeneroModel genero){
+    LocalDateTime data_cadastro, double preco, EnderecoModel genero){
 
 
         super();

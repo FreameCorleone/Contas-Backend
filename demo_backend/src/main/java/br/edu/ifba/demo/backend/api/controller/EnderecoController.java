@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifba.demo.backend.api.dto.GeneroDTO;
-import br.edu.ifba.demo.backend.api.model.GeneroModel;
-import br.edu.ifba.demo.backend.api.repository.GeneroRepository;
+import br.edu.ifba.demo.backend.api.dto.EnderecoDTO;
+import br.edu.ifba.demo.backend.api.model.EnderecoModel;
+import br.edu.ifba.demo.backend.api.repository.EnderecoRepository;
 
 
 @RestController
 @RequestMapping("/genero")
-public class GeneroController {
+public class EnderecoController {
 
 
     @Autowired
-    private GeneroRepository generoRepository;
+    private EnderecoRepository generoRepository;
 
 
-    public GeneroController(GeneroRepository generoRepository){
+    public EnderecoController(EnderecoRepository generoRepository){
         this.generoRepository = generoRepository;
     }
 
@@ -44,17 +44,17 @@ public class GeneroController {
 
 
     @GetMapping("/listall")
-    public List<GeneroDTO> listall() {
-        List<GeneroModel> generos = generoRepository.findAll();
-        return generos.stream().map(GeneroDTO::converter).toList();
+    public List<EnderecoDTO> listall() {
+        List<EnderecoModel> generos = generoRepository.findAll();
+        return generos.stream().map(EnderecoDTO::converter).toList();
     }
 
 
 
 
     @GetMapping("/buscarporid/{id}")
-    public GeneroModel findById(@PathVariable ("id") Long id){
-        Optional<GeneroModel> genero = generoRepository.findById(id);
+    public EnderecoModel findById(@PathVariable ("id") Long id){
+        Optional<EnderecoModel> genero = generoRepository.findById(id);
         if(genero.isPresent())
             return genero.get();
        
@@ -63,8 +63,8 @@ public class GeneroController {
 
 
     @GetMapping("buscarpornome/{nome}")
-    public GeneroModel findByNome(@PathVariable ("nome") String nome){
-        Optional<GeneroModel> genero = generoRepository.findByNome(nome);
+    public EnderecoModel findByNome(@PathVariable ("nome") String nome){
+        Optional<EnderecoModel> genero = generoRepository.findByNome(nome);
         if (genero.isPresent())
             return genero.get();
        
@@ -75,26 +75,26 @@ public class GeneroController {
 
 
     @PostMapping("/salvar")
-    public ResponseEntity<GeneroModel> addGenero(@RequestBody GeneroModel genero){
-        GeneroModel savedGenero = generoRepository.save(genero);
-        return new ResponseEntity<GeneroModel>(savedGenero, HttpStatus.CREATED);
+    public ResponseEntity<EnderecoModel> addGenero(@RequestBody EnderecoModel genero){
+        EnderecoModel savedGenero = generoRepository.save(genero);
+        return new ResponseEntity<EnderecoModel>(savedGenero, HttpStatus.CREATED);
     }
 
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<GeneroModel> atualizarGenero
-    (@PathVariable Long id, @RequestBody GeneroModel generoAtualizado){
-        Optional<GeneroModel> generoExistente = generoRepository.findById(id);
+    public ResponseEntity<EnderecoModel> atualizarGenero
+    (@PathVariable Long id, @RequestBody EnderecoModel generoAtualizado){
+        Optional<EnderecoModel> generoExistente = generoRepository.findById(id);
 
 
         if(generoExistente.isPresent()){
-            GeneroModel genero = generoExistente.get();
+            EnderecoModel genero = generoExistente.get();
 
 
             genero.setNome(generoAtualizado.getNome());
 
 
-            GeneroModel generoSalvo = generoRepository.save(genero);
+            EnderecoModel generoSalvo = generoRepository.save(genero);
             return ResponseEntity.ok(generoSalvo);
         }
 

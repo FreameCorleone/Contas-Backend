@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifba.demo.backend.api.model.GeneroModel;
+import br.edu.ifba.demo.backend.api.model.EnderecoModel;
 import br.edu.ifba.demo.backend.api.model.LivroModel;
-import br.edu.ifba.demo.backend.api.repository.GeneroRepository;
+import br.edu.ifba.demo.backend.api.repository.EnderecoRepository;
 import br.edu.ifba.demo.backend.api.repository.LivroRepository;
 
 
@@ -29,9 +29,9 @@ public class LivroController {
     @Autowired
     private LivroRepository livroRepository;
     @Autowired
-    private GeneroRepository generoRepository;
+    private EnderecoRepository generoRepository;
    
-    public LivroController(LivroRepository livroRepository, GeneroRepository generoRepository) {
+    public LivroController(LivroRepository livroRepository, EnderecoRepository generoRepository) {
         this.livroRepository = livroRepository;
         this.generoRepository = generoRepository;
     }
@@ -109,7 +109,7 @@ public class LivroController {
     @PostMapping("/salvar")
     public ResponseEntity<LivroModel> addLivro(@RequestBody LivroModel livro) {
         if (livro.getGenero() != null && livro.getGenero().getId_genero() != null) {
-            Optional<GeneroModel> generoOpt = generoRepository.findById(livro.getGenero().getId_genero());
+            Optional<EnderecoModel> generoOpt = generoRepository.findById(livro.getGenero().getId_genero());
             if (generoOpt.isPresent()) {
                 livro.setGenero(generoOpt.get());
             } else {
@@ -145,7 +145,7 @@ public class LivroController {
 
             // Garantindo que o gênero exista no banco antes de atualizar
             if (livroAtualizado.getGenero() != null && livroAtualizado.getGenero().getId_genero() != null) {
-                Optional<GeneroModel> generoOpt = generoRepository.findById(livroAtualizado.getGenero().getId_genero());
+                Optional<EnderecoModel> generoOpt = generoRepository.findById(livroAtualizado.getGenero().getId_genero());
                 if (generoOpt.isPresent()) {
                     livro.setGenero(generoOpt.get());
                 } else {
