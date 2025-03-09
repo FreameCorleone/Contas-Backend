@@ -22,16 +22,16 @@ import br.edu.ifba.demo.backend.api.repository.EnderecoRepository;
 
 
 @RestController
-@RequestMapping("/genero")
+@RequestMapping("/endereco")
 public class EnderecoController {
 
 
     @Autowired
-    private EnderecoRepository generoRepository;
+    private EnderecoRepository enderecoRepository;
 
 
-    public EnderecoController(EnderecoRepository generoRepository){
-        this.generoRepository = generoRepository;
+    public EnderecoController(EnderecoRepository enderecoRepository){
+        this.enderecoRepository = enderecoRepository;
     }
 
 
@@ -45,77 +45,115 @@ public class EnderecoController {
 
     @GetMapping("/listall")
     public List<EnderecoDTO> listall() {
-        List<EnderecoModel> generos = generoRepository.findAll();
-        return generos.stream().map(EnderecoDTO::converter).toList();
+        List<EnderecoModel> endereco = enderecoRepository.findAll();
+        return endereco.stream().map(EnderecoDTO::converter).toList();
     }
 
-
-
-
-    @GetMapping("/buscarporid/{id}")
+    @GetMapping("buscarporid/{id}")
     public EnderecoModel findById(@PathVariable ("id") Long id){
-        Optional<EnderecoModel> genero = generoRepository.findById(id);
-        if(genero.isPresent())
-            return genero.get();
-       
+        Optional<EnderecoModel> endereco = enderecoRepository.findById(id);
+        if(endereco.isPresent())
+            return endereco.get();
+
         return null;
     }
 
+    @GetMapping("buscarporestado/{estado}")
+    public EnderecoModel findByEstado(@PathVariable ("estado") String estado){
+        Optional<EnderecoModel> endereco = enderecoRepository.findByEstado(estado);
+        if(endereco.isPresent())
+            return endereco.get();
 
-    @GetMapping("buscarpornome/{nome}")
-    public EnderecoModel findByNome(@PathVariable ("nome") String nome){
-        Optional<EnderecoModel> genero = generoRepository.findByNome(nome);
-        if (genero.isPresent())
-            return genero.get();
-       
         return null;
-
-
     }
 
+    @GetMapping("buscarporcidade/{cidade}")
+    public EnderecoModel findByCidade(@PathVariable ("cidade") String cidade){
+        Optional<EnderecoModel> endereco = enderecoRepository.findByCidade(cidade);
+        if(endereco.isPresent())
+            return endereco.get();
+
+        return null;
+    }
+
+    @GetMapping("buscarporbairro/{bairro}")
+    public EnderecoModel findByBairro(@PathVariable ("bairro") String bairro){
+        Optional<EnderecoModel> endereco = enderecoRepository.findByBairro(bairro);
+        if(endereco.isPresent())
+            return endereco.get();
+
+        return null;
+    }
+
+    @GetMapping("buscarporrua/{rua}")
+    public EnderecoModel findByRua(@PathVariable ("rua") String rua){
+        Optional<EnderecoModel> endereco = enderecoRepository.findByRua(rua);
+        if(endereco.isPresent())
+            return endereco.get();
+
+        return null;
+    }
+
+    @GetMapping("buscarpornumero/{numero}")
+    public EnderecoModel findByNumero(@PathVariable ("numero") String numero){
+        Optional<EnderecoModel> endereco = enderecoRepository.findByNumero(numero);
+        if(endereco.isPresent())
+            return endereco.get();
+
+        return null;
+    }
+
+    @GetMapping("/buscarporcep/{cep}")
+    public EnderecoModel findByCep(@PathVariable ("cep") String cep){
+        Optional<EnderecoModel> endereco = enderecoRepository.findByCep(cep);
+        if(endereco.isPresent())
+            return endereco.get();
+        
+            return null;
+        
+    }
 
     @PostMapping("/salvar")
-    public ResponseEntity<EnderecoModel> addGenero(@RequestBody EnderecoModel genero){
-        EnderecoModel savedGenero = generoRepository.save(genero);
-        return new ResponseEntity<EnderecoModel>(savedGenero, HttpStatus.CREATED);
+    public ResponseEntity<EnderecoModel> addEndereco(@RequestBody EnderecoModel endereco){
+        EnderecoModel savedEndereco = enderecoRepository.save(endereco);
+        return new ResponseEntity<EnderecoModel>(savedEndereco, HttpStatus.CREATED);
     }
 
-
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<EnderecoModel> atualizarGenero
-    (@PathVariable Long id, @RequestBody EnderecoModel generoAtualizado){
-        Optional<EnderecoModel> generoExistente = generoRepository.findById(id);
+    public ResponseEntity<EnderecoModel> atualizarEndereco
+    (@PathVariable Long id, @RequestBody EnderecoModel enderecoAtualizado){
 
+        Optional<EnderecoModel> enderecoExistente = enderecoRepository.findById(id);
 
-        if(generoExistente.isPresent()){
-            EnderecoModel genero = generoExistente.get();
+        if(enderecoExistente.isPresent()){
+            EnderecoModel endereco = enderecoExistente.get();
 
+            endereco.setEstado(enderecoAtualizado.getEstado());
+            endereco.setCidade(enderecoAtualizado.getCidade());
+            endereco.setBairro(enderecoAtualizado.getBairro());
+            endereco.setRua(enderecoAtualizado.getRua());
+            endereco.setNumero(enderecoAtualizado.getNumero());
+            endereco.setCep(enderecoAtualizado.getCep());
 
-            genero.setNome(generoAtualizado.getNome());
+            EnderecoModel enderecoSalvo = enderecoRepository.save(endereco);
+            return ResponseEntity.ok(enderecoSalvo);
 
-
-            EnderecoModel generoSalvo = generoRepository.save(genero);
-            return ResponseEntity.ok(generoSalvo);
         }
-
-
         else{
-
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
-    @DeleteMapping("/deletargenero/{id}")
+    @DeleteMapping("/deleteendereco/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable ("id") Long id){
-        if(generoRepository.existsById(id)){
-            generoRepository.deleteById(id);
+        if(enderecoRepository.existsById(id)){
+            enderecoRepository.deleteById(id);
             return ResponseEntity.noContent().build();
-        } 
-        
+        }
         else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-   
+
 }

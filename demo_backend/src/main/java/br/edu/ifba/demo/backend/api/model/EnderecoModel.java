@@ -25,7 +25,6 @@ public class EnderecoModel {
     @Column(name = "estado", nullable = false)
     private String estado;
 
-
     @Column(name = "cidade", nullable = false)
     private String cidade;
 
@@ -46,16 +45,15 @@ public class EnderecoModel {
     }    
 
 
-    public EnderecoModel(String nome){
+    public EnderecoModel(String estado){
         super();
-        this.nome = nome;
+        this.estado = estado;
+        this.cidade = cidade;
+        this.bairro = bairro;
+        this.rua = rua;
+        this.numero = numero;
+        this.cep = cep;
     }
 
-
-    public EnderecoModel(String nome, boolean status){
-        super();
-        this.nome = nome;
-        this.status = status;
-    } 
    
 }

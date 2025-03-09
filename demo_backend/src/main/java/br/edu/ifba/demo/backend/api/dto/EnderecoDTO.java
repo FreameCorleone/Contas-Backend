@@ -7,16 +7,24 @@ import lombok.Data;
 
 @Data
 public class EnderecoDTO {
-    private Long id;
-    private String nome;
-    private boolean status;
+    private Long idendereco;
+    private String estado;
+    private String cidade;
+    private String bairro;
+    private String rua;
+    private String numero;
+    private String cep;
 
 
     public static EnderecoDTO converter(EnderecoModel generoModel) {
         EnderecoDTO genero = new EnderecoDTO();
-        genero.setId(generoModel.getId_genero());
-        genero.setNome(generoModel.getNome());
-        genero.setStatus(generoModel.isStatus());
+        genero.setIdendereco(generoModel.getIdendereco());
+        genero.setEstado(generoModel.getEstado());
+        genero.setCidade(generoModel.getCidade());
+        genero.setBairro(generoModel.getBairro());
+        genero.setRua(generoModel.getRua());
+        genero.setNumero(generoModel.getNumero());
+        genero.setCep(generoModel.getCep());
         return genero;
     }
 }
