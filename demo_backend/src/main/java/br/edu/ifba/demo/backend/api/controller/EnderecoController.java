@@ -39,7 +39,7 @@ public class EnderecoController {
     public String teste(){
 
 
-        return "Testando rota genero";
+        return "Testando rota endereço";
     }
 
 
