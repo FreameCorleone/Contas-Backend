@@ -39,6 +39,11 @@ public class UsuarioController {
 		var usuarios = usuRepository.findAll();
 		return usuarios;
 	}
+	
+	@GetMapping("/listalldados")
+	public List<Object[]> getUsuarios(){
+		return usuRepository.getUsuarioDados();
+	}
 
 	// Método que retornar o usuario associado ao ID passado como parametro
 	@GetMapping("buscarporid/{id}")
@@ -101,8 +106,5 @@ public class UsuarioController {
         }
     }
 
-	@GetMapping("/usuariodados")
-	public List<Object[]> getUsuarios(){
-		return usuRepository.getUsuarioDados();
-	}
+	
 }
