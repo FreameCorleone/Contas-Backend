@@ -3,6 +3,7 @@ package br.edu.ifba.demo.backend.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,10 @@ import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 @RequestMapping("/usuario")
 public class UsuarioController {
 	
+	@Autowired
 	private UsuarioRepository usuRepository;
 	
 	public UsuarioController(UsuarioRepository usuRepository) {
-		super();
 		this.usuRepository = usuRepository;
 	}
 
@@ -39,7 +40,7 @@ public class UsuarioController {
 	}
 
 	// Método que retornar o usuario associado ao ID passado como parametro
-	@GetMapping("/{id}")
+	@GetMapping("buscarporid/{id}")
     public UsuarioModel findById(@PathVariable("id") Long id) {
 		Optional<UsuarioModel> usuario = usuRepository.findById(id);
 		if ( usuario.isPresent() )
@@ -47,13 +48,9 @@ public class UsuarioController {
         return null;
     }
 
-	@GetMapping("/index")
-	public String index() {
-		return "index";
-	}
 
 	  // Método para adicionar um novo usuário
-	  @PostMapping
+	  @PostMapping("/salvar")
 	  public ResponseEntity<UsuarioModel> addUsuario(@RequestBody UsuarioModel usuario) {
 		  UsuarioModel savedUsuario = usuRepository.save(usuario);
 		  return new ResponseEntity<>(savedUsuario, HttpStatus.CREATED);
