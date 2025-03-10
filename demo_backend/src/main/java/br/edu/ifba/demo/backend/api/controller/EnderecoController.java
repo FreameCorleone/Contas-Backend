@@ -145,7 +145,7 @@ public class EnderecoController {
         }
     }
 
-    @DeleteMapping("/deleteendereco/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable ("id") Long id){
         if(enderecoRepository.existsById(id)){
             enderecoRepository.deleteById(id);

@@ -92,7 +92,7 @@ public class UsuarioController {
 	  }
 
 
-	  @DeleteMapping("/deleteusuario/{id}")
+	  @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable ("id") Long id){
         if(usuRepository.existsById(id)){
             usuRepository.deleteById(id);
