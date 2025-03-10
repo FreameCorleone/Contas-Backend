@@ -45,8 +45,9 @@ public class EnderecoModel {
     }    
 
 
-    public EnderecoModel(String estado){
+    public EnderecoModel(long idendereco, String estado, String cidade, String bairro, String rua, String numero, String cep){
         super();
+        this.idendereco = idendereco;
         this.estado = estado;
         this.cidade = cidade;
         this.bairro = bairro;
