@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +49,38 @@ public class UsuarioController {
         return null;
     }
 
+	@GetMapping("buscarpornome/{nome}")
+    public UsuarioModel findByNome(@PathVariable("nome") String nome) {
+		Optional<UsuarioModel> usuario = usuRepository.findByNome(nome);
+		if ( usuario.isPresent() )
+			return usuario.get();
+        return null;
+    }
+
+	@GetMapping("buscarporlogin/{login}")
+    public UsuarioModel findByLogin(@PathVariable("login") String login) {
+		Optional<UsuarioModel> usuario = usuRepository.findByLogin(login);
+		if ( usuario.isPresent() )
+			return usuario.get();
+        return null;
+    }
+
+	@GetMapping("buscarporemail/{email}")
+    public UsuarioModel findByEmail(@PathVariable("email") String email) {
+		Optional<UsuarioModel> usuario = usuRepository.findByEmail(email);
+		if ( usuario.isPresent() )
+			return usuario.get();
+        return null;
+    }
+
+	@GetMapping("buscarporcpf/{cpf}")
+    public UsuarioModel findByCpf(@PathVariable("cpf") String cpf) {
+		Optional<UsuarioModel> usuario = usuRepository.findByCpf(cpf);
+		if ( usuario.isPresent() )
+			return usuario.get();
+        return null;
+    }
+
 
 	  // Método para adicionar um novo usuário
 	  @PostMapping("/salvar")
@@ -55,4 +88,16 @@ public class UsuarioController {
 		  UsuarioModel savedUsuario = usuRepository.save(usuario);
 		  return new ResponseEntity<>(savedUsuario, HttpStatus.CREATED);
 	  }
+
+
+	  @DeleteMapping("/deleteusuario/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable ("id") Long id){
+        if(usuRepository.existsById(id)){
+            usuRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
