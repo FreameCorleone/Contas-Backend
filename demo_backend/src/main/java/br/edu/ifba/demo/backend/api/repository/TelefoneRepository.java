@@ -1,12 +1,12 @@
 package br.edu.ifba.demo.backend.api.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.edu.ifba.demo.backend.api.model.TelefoneModel;
-import br.edu.ifba.demo.backend.api.model.UsuarioModel;
 
 @Repository
 public interface TelefoneRepository 
@@ -14,7 +14,6 @@ public interface TelefoneRepository
 {
     
     Optional<TelefoneModel> findByNumero(String numero);
-    Optional<TelefoneModel> findByTiponumero(String tiponumero);
-    Optional<TelefoneModel> findByIdusuario(UsuarioModel idUsuario);
+    List<TelefoneModel> findByTiponumero(String tiponumero);
 
 }

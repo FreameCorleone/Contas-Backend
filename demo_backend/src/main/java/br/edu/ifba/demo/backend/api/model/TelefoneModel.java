@@ -27,7 +27,7 @@ public class TelefoneModel {
     private String tiponumero;
 
     @ManyToOne
-    @JoinColumn(name = "idUsuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private UsuarioModel idUsuario;
 
     public TelefoneModel(){
