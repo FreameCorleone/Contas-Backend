@@ -100,4 +100,9 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+	@GetMapping("/usuariodados")
+	public List<Object[]> getUsuarios(){
+		return usuRepository.getUsuarioDados();
+	}
 }
