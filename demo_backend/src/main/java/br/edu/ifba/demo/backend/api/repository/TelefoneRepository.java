@@ -15,5 +15,6 @@ public interface TelefoneRepository
     
     Optional<TelefoneModel> findByNumero(String numero);
     List<TelefoneModel> findByTiponumero(String tiponumero);
+    List<TelefoneModel> findByIdUsuario_Idusuario(Long idUsuario);
 
 }

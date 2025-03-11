@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifba.demo.backend.api.model.TelefoneModel;
 import br.edu.ifba.demo.backend.api.repository.TelefoneRepository;
+import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/telefone")
@@ -23,9 +24,11 @@ public class TelefoneController {
 
     @Autowired
     private TelefoneRepository telefoneRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public TelefoneController (TelefoneRepository telefoneRepository){
+    public TelefoneController (TelefoneRepository telefoneRepository, UsuarioRepository usuarioRepository){
         this.telefoneRepository = telefoneRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping
@@ -64,11 +67,24 @@ public class TelefoneController {
         return telefones;
     }
 
-    @PostMapping("/salvar")
-    public ResponseEntity<TelefoneModel> addEndereco(@RequestBody TelefoneModel telefone){
-        TelefoneModel savedTelefone = telefoneRepository.save(telefone);
-        return new ResponseEntity<TelefoneModel>(savedTelefone, HttpStatus.CREATED);
+    @GetMapping("/buscarporusuario/{idUsuario}")
+    public ResponseEntity<List<TelefoneModel>> getTelefonesPorUsuario(@PathVariable Long idUsuario) {
+        List<TelefoneModel> telefones = telefoneRepository.findByIdUsuario_Idusuario(idUsuario);
+
+        if (telefones.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(telefones);
     }
+
+    @PostMapping("/salvar")
+    public ResponseEntity<TelefoneModel> addTelefone(@RequestBody TelefoneModel telefones) {
+        TelefoneModel savedTelefone = telefoneRepository.save(telefones);
+        return new ResponseEntity<>(savedTelefone, HttpStatus.CREATED);
+    }
+
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable ("id") Long id){
