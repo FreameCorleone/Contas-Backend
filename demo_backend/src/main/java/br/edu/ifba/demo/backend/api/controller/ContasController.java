@@ -1,6 +1,6 @@
 package br.edu.ifba.demo.backend.api.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,13 +62,13 @@ public class ContasController {
 	}
 
 	@GetMapping("/buscarporvencimento/{datavencimento}")
-    public ResponseEntity<List<ContasModel>> findByDatavencimento(@PathVariable LocalDateTime datavencimento) {
+    public ResponseEntity<List<ContasModel>> findByDatavencimento(@PathVariable LocalDate  datavencimento) {
         List<ContasModel> contas = contasRepository.findByDatavencimento(datavencimento);
         return ResponseEntity.ok(contas);
     }
 
 	@GetMapping("/buscarporpagamento/{datapagamento}")
-    public ResponseEntity<List<ContasModel>> findByDatapagamento(@PathVariable LocalDateTime datapagamento) {
+    public ResponseEntity<List<ContasModel>> findByDatapagamento(@PathVariable LocalDate  datapagamento) {
         List<ContasModel> contas = contasRepository.findByDatapagamento(datapagamento);
         return ResponseEntity.ok(contas);
     }

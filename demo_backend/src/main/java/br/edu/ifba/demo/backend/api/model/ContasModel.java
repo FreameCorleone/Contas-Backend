@@ -1,6 +1,6 @@
 package br.edu.ifba.demo.backend.api.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,10 +29,10 @@ public class ContasModel {
     private Float valor;
 
     @Column(name = "data_vencimento", nullable = false)
-    private LocalDateTime datavencimento;
+    private LocalDate  datavencimento;
 
     @Column(name = "data_pagamento", nullable = false)
-    private LocalDateTime datapagamento;
+    private LocalDate  datapagamento;
 
     @Column(name = "tipo_conta", nullable = false)
     private String tipoconta;
@@ -52,8 +52,8 @@ public class ContasModel {
         super();
     }
 
-    public ContasModel(long idcontas, String descricao, float valor, LocalDateTime datavencimento, 
-    LocalDateTime datapagamento, String tipoconta, boolean statuscontas, UsuarioModel idusuario, CategoriaModel idcategoria){
+    public ContasModel(long idcontas, String descricao, float valor, LocalDate  datavencimento, 
+    LocalDate datapagamento, String tipoconta, boolean statuscontas, UsuarioModel idusuario, CategoriaModel idcategoria){
         super();
         this.idcontas = idcontas;
         this.descricao = descricao;

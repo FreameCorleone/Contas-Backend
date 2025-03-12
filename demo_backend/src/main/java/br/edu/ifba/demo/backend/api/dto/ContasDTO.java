@@ -1,6 +1,6 @@
 package br.edu.ifba.demo.backend.api.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +13,8 @@ public class ContasDTO {
     private long idcontas;
     private String descricao;
     private float valor;
-    private LocalDateTime datavencimento;
-    private LocalDateTime datapagamento;
+    private LocalDate  datavencimento;
+    private LocalDate datapagamento;
     private String tipoconta;
     private boolean statuscontas;
     private Long idusuario;
@@ -46,7 +46,7 @@ public class ContasDTO {
         super();
     }
 
-    public ContasDTO(long idcontas, String descricao, float valor, LocalDateTime datavencimento, LocalDateTime datapagamento, String tipoconta, boolean statuscontas, Long idusuario, Long idcategoria){
+    public ContasDTO(long idcontas, String descricao, float valor, LocalDate  datavencimento, LocalDate  datapagamento, String tipoconta, boolean statuscontas, Long idusuario, Long idcategoria){
         super();
         this.idcontas = idcontas;
         this.descricao = descricao;
