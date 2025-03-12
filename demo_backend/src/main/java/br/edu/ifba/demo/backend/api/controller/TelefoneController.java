@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifba.demo.backend.api.model.TelefoneModel;
 import br.edu.ifba.demo.backend.api.repository.TelefoneRepository;
-import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/telefone")
@@ -24,11 +23,9 @@ public class TelefoneController {
 
     @Autowired
     private TelefoneRepository telefoneRepository;
-    private UsuarioRepository usuarioRepository;
 
-    public TelefoneController (TelefoneRepository telefoneRepository, UsuarioRepository usuarioRepository){
+    public TelefoneController (TelefoneRepository telefoneRepository){
         this.telefoneRepository = telefoneRepository;
-        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping

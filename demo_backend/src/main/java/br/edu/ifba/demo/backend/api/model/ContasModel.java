@@ -1,6 +1,6 @@
 package br.edu.ifba.demo.backend.api.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +47,10 @@ public class ContasModel {
     @ManyToOne
     @JoinColumn(name = "idcategoria", nullable = false)
     private CategoriaModel idcategoria;
+
+    public ContasModel(){
+        super();
+    }
 
     public ContasModel(long idcontas, String descricao, float valor, Date datavencimento, 
     Date datapagamento, String tipoconta, boolean statuscontas, UsuarioModel idusuario, CategoriaModel idcategoria){

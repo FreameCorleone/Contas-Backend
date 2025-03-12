@@ -1,7 +1,7 @@
 package br.edu.ifba.demo.backend.api.dto;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.edu.ifba.demo.backend.api.model.ContasModel;
