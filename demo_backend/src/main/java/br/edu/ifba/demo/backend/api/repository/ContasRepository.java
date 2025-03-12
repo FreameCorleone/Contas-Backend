@@ -18,6 +18,8 @@ public interface ContasRepository
     List<ContasModel> findByDatapagamento(LocalDate datapagamento);
     List<ContasModel> findByTipoconta(String tipoConta);
     List<ContasModel> findByStatuscontas(Boolean statuscontas);
+    List<ContasModel> findByIdusuarioIdusuario(Long idusuario);
+    List<ContasModel> findByIdcategoriaIdcategoria(Long idcategoria);
 
 
 }

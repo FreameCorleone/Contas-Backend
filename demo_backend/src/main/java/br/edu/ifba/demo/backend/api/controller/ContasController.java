@@ -73,6 +73,17 @@ public class ContasController {
         return ResponseEntity.ok(contas);
     }
 
+	@GetMapping("/buscarporusuario/{idusuario}")
+    public ResponseEntity<List<ContasModel>> buscarPorUsuario(@PathVariable Long idusuario) {
+        List<ContasModel> contas = contasRepository.findByIdusuarioIdusuario(idusuario);
+        return ResponseEntity.ok(contas);
+    }
+
+	@GetMapping("/buscarporcategoria/{idcategoria}")
+    public ResponseEntity<List<ContasModel>> buscarPorCategoria(@PathVariable Long idcategoria) {
+        List<ContasModel> contas = contasRepository.findByIdcategoriaIdcategoria(idcategoria);
+        return ResponseEntity.ok(contas);
+    }
 
 	@PostMapping("/salvar")
     public ResponseEntity<ContasModel> addTelefone(@RequestBody ContasModel contas) {
