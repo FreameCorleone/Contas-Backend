@@ -1,11 +1,16 @@
 package br.edu.ifba.demo.backend.api.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,5 +49,35 @@ public class ContasController {
 		return null;
 	}
 
+	@GetMapping("/buscarportipoconta/{tipoConta}")
+	public ResponseEntity<List<ContasModel>> findByTipoconta(@PathVariable String tipoConta) {
+		List<ContasModel> contas = contasRepository.findByTipoconta(tipoConta);
+		return ResponseEntity.ok(contas);
+	}
+
+	@GetMapping("/buscarporstatuscontas/{statuscontas}")
+	public ResponseEntity<List<ContasModel>> findByStatuscontas(@PathVariable Boolean statuscontas) {
+		List<ContasModel> contas = contasRepository.findByStatuscontas(statuscontas);
+		return ResponseEntity.ok(contas);
+	}
+
+	@GetMapping("/buscarporvencimento/{datavencimento}")
+    public ResponseEntity<List<ContasModel>> findByDatavencimento(@PathVariable LocalDateTime datavencimento) {
+        List<ContasModel> contas = contasRepository.findByDatavencimento(datavencimento);
+        return ResponseEntity.ok(contas);
+    }
+
+	@GetMapping("/buscarporpagamento/{datapagamento}")
+    public ResponseEntity<List<ContasModel>> findByDatapagamento(@PathVariable LocalDateTime datapagamento) {
+        List<ContasModel> contas = contasRepository.findByDatapagamento(datapagamento);
+        return ResponseEntity.ok(contas);
+    }
+
+
+	@PostMapping("/salvar")
+    public ResponseEntity<ContasModel> addTelefone(@RequestBody ContasModel contas) {
+        ContasModel savedContas = contasRepository.save(contas);
+        return new ResponseEntity<>(savedContas, HttpStatus.CREATED);
+    }
 
 }

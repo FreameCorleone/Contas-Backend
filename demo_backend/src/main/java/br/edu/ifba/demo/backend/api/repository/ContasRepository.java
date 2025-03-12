@@ -1,7 +1,7 @@
 package br.edu.ifba.demo.backend.api.repository;
 
-import java.util.Date;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,10 +14,10 @@ public interface ContasRepository
     extends JpaRepository<ContasModel, Long>
 {
 
-    Optional<ContasModel> findByDatavencimento(Date datavencimento);
-    Optional<ContasModel> findByDatapagamento(Date datapagamento);
-    Optional<ContasModel> findByTipoconta(String tipoconta);
-    Optional<ContasModel> findByStatuscontas(Boolean Statuscontas);
+    List<ContasModel> findByDatavencimento(LocalDateTime datavencimento);
+    List<ContasModel> findByDatapagamento(LocalDateTime datapagamento);
+    List<ContasModel> findByTipoconta(String tipoConta);
+    List<ContasModel> findByStatuscontas(Boolean statuscontas);
 
 
 }
