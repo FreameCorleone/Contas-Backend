@@ -29,16 +29,16 @@ public class ContasModel {
     private Float valor;
 
     @Column(name = "data_vencimento", nullable = false)
-    private Date data_vencimento;
+    private Date datavencimento;
 
     @Column(name = "data_pagamento", nullable = false)
-    private Date data_pagamento;
+    private Date datapagamento;
 
     @Column(name = "tipo_conta", nullable = false)
-    private String tipo_conta;
+    private String tipoconta;
 
     @Column(name = "status_contas", nullable = false)
-    private boolean status_contas;
+    private boolean statuscontas;
 
     @ManyToOne
     @JoinColumn(name = "idusuario", nullable = false)
@@ -46,18 +46,18 @@ public class ContasModel {
 
     @ManyToOne
     @JoinColumn(name = "idcategoria", nullable = false)
-    private UsuarioModel idcategoria;
+    private CategoriaModel idcategoria;
 
-    public ContasModel(long idcontas, String descricao, float valor, Date data_vencimento, 
-    Date data_pagamento, String tipo_conta, boolean status_contas, UsuarioModel idusuario, UsuarioModel idcategoria){
+    public ContasModel(long idcontas, String descricao, float valor, Date datavencimento, 
+    Date datapagamento, String tipoconta, boolean statuscontas, UsuarioModel idusuario, CategoriaModel idcategoria){
         super();
         this.idcontas = idcontas;
         this.descricao = descricao;
         this.valor = valor;
-        this.data_vencimento = data_vencimento;
-        this.data_pagamento = data_pagamento;
-        this.tipo_conta = tipo_conta;
-        this.status_contas = status_contas;
+        this.datavencimento = datavencimento;
+        this.datapagamento = datapagamento;
+        this.tipoconta = tipoconta;
+        this.statuscontas = statuscontas;
         this.idusuario = idusuario;
         this.idcategoria = idcategoria;
     }
