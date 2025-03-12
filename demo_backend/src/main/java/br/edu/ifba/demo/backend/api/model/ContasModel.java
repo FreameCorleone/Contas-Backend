@@ -31,7 +31,7 @@ public class ContasModel {
     @Column(name = "data_vencimento", nullable = false)
     private LocalDate  datavencimento;
 
-    @Column(name = "data_pagamento", nullable = false)
+    @Column(name = "data_pagamento", nullable = true)
     private LocalDate  datapagamento;
 
     @Column(name = "tipo_conta", nullable = false)
