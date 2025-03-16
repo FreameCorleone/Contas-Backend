@@ -19,7 +19,13 @@ public interface UsuarioRepository
 	Optional<UsuarioModel> findByEmail(String email);
 	Optional<UsuarioModel> findByLogin(String login);
 
-	@Query(value = "SELECT u.idusuario, u.nome,u.cpf,u.email,u.login,u.senha,e.estado,e.cidade,e.bairro,e.rua,e.numero,e.cep,t.numero AS telefone,t.tipo_numero	FROM usuario u JOIN endereco e ON u.idendereco = e.idendereco JOIN telefone t ON u.idusuario = t.idUsuario;", nativeQuery = true)
-	List<Object[]> getUsuarioDados();
+	@Query(value = "SELECT u.idusuario, u.nome, u.cpf, u.email, u.login, u.senha, " +
+               "e.estado, e.cidade, e.bairro, e.rua, e.numero, e.cep, " +
+               "t.numero AS telefone, t.tipo_numero " +
+               "FROM usuario u " +
+               "JOIN endereco e ON u.idendereco = e.idendereco " +
+               "JOIN telefone t ON u.idusuario = t.id_usuario;", nativeQuery = true)
+List<Object[]> getUsuarioDados();
+
 
 }
