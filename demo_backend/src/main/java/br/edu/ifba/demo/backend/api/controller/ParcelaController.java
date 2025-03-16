@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,4 +56,15 @@ public class ParcelaController {
 		ParcelaModel savedParcela = parcelaRepository.save(parcela);
 		return new ResponseEntity<>(savedParcela, HttpStatus.CREATED);
 	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteParcela(@PathVariable Long id) {
+		if (!parcelaRepository.existsById(id)) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: Parcela não encontrada!");
+		}
+		
+		parcelaRepository.deleteById(id);
+		return ResponseEntity.ok("Parcela deletada com sucesso!");
+	}
+
 }

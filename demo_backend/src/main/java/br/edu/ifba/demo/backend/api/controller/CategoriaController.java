@@ -65,7 +65,7 @@ public class CategoriaController {
     }
 
     @PostMapping("/salvar")
-	  public ResponseEntity<CategoriaModel> addUsuario(@RequestBody CategoriaModel categoria) {
+	  public ResponseEntity<CategoriaModel> addCategoria(@RequestBody CategoriaModel categoria) {
         CategoriaModel savedCategoria = categoriaRepository.save(categoria);
 		  return new ResponseEntity<>(savedCategoria, HttpStatus.CREATED);
     }
