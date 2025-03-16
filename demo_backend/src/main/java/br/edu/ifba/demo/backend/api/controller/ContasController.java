@@ -78,11 +78,18 @@ public class ContasController {
         return ResponseEntity.ok(contas);
     }
 
-	@GetMapping("/buscarporusuario/{idusuario}")
+	@GetMapping("/buscarporidusuario/{idusuario}")
     public ResponseEntity<List<ContasModel>> buscarPorUsuario(@PathVariable Long idusuario) {
         List<ContasModel> contas = contasRepository.findByIdusuarioIdusuario(idusuario);
         return ResponseEntity.ok(contas);
     }
+
+	@GetMapping("/buscarpornomeusuario/{nome}")
+	public ResponseEntity<List<ContasModel>> buscarPorNome(@PathVariable String nome) {
+		List<ContasModel> contas = contasRepository.findByIdusuario_Nome(nome);
+		return ResponseEntity.ok(contas);
+	}
+
 
 	@GetMapping("/buscarporcategoria/{idcategoria}")
     public ResponseEntity<List<ContasModel>> buscarPorCategoria(@PathVariable Long idcategoria) {
