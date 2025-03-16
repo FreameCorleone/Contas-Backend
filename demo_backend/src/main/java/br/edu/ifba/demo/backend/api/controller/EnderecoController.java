@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -146,13 +147,17 @@ public class EnderecoController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable ("id") Long id){
-        if(enderecoRepository.existsById(id)){
+    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+        if (!enderecoRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Endereço não encontrado.");
+        }
+
+        try {
             enderecoRepository.deleteById(id);
             return ResponseEntity.noContent().build();
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Não é possível deletar o endereço, pois ele está associado a um ou mais usuários.");
         }
     }
 
