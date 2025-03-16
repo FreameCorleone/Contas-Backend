@@ -68,6 +68,6 @@ public class CategoriaController {
 	  public ResponseEntity<CategoriaModel> addUsuario(@RequestBody CategoriaModel categoria) {
         CategoriaModel savedCategoria = categoriaRepository.save(categoria);
 		  return new ResponseEntity<>(savedCategoria, HttpStatus.CREATED);
-      }
+    }
 
 }

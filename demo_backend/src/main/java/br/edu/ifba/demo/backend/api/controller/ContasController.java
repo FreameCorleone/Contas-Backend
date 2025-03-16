@@ -97,20 +97,18 @@ public class ContasController {
     }
 
 	@DeleteMapping("/delete/{id}")
-public ResponseEntity<String> deletarById(@PathVariable ("id") Long id) {
-    if (!contasRepository.existsById(id)) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada.");
-    }
+	public ResponseEntity<String> deletarById(@PathVariable ("id") Long id) {
+		if (!contasRepository.existsById(id)) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada.");
+		}
 
-    List<ParcelaModel> parcelas = parcelaRepository.findByIdcontas_Idcontas(id);
-    if (!parcelas.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não é possível excluir a conta. Há parcelas associadas.");
-    }
+		List<ParcelaModel> parcelas = parcelaRepository.findByIdcontas_Idcontas(id);
+		if (!parcelas.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não é possível excluir a conta. Há parcelas associadas.");
+		}
 
-    contasRepository.deleteById(id);
-    return ResponseEntity.noContent().build();
-}
-
-
+		contasRepository.deleteById(id);
+		return ResponseEntity.noContent().build();
+	}
 
 }
