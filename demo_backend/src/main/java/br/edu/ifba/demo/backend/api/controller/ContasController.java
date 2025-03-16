@@ -91,7 +91,7 @@ public class ContasController {
     }
 
 	@PostMapping("/salvar")
-    public ResponseEntity<ContasModel> addTelefone(@RequestBody ContasModel contas) {
+    public ResponseEntity<ContasModel> addContas(@RequestBody ContasModel contas) {
         ContasModel savedContas = contasRepository.save(contas);
         return new ResponseEntity<>(savedContas, HttpStatus.CREATED);
     }
