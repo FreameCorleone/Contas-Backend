@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ifba.demo.backend.api.dto.UsuarioDTO;
 import br.edu.ifba.demo.backend.api.model.UsuarioModel;
 import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 
@@ -86,11 +87,11 @@ public class UsuarioController {
     }
 
 
-	  @PostMapping("/salvar")
+	@PostMapping("/salvar")
 	  public ResponseEntity<UsuarioModel> addUsuario(@RequestBody UsuarioModel usuario) {
 		  UsuarioModel savedUsuario = usuRepository.save(usuario);
 		  return new ResponseEntity<>(savedUsuario, HttpStatus.CREATED);
-	  }
+	}
 
 
 	@DeleteMapping("/delete/{id}")
@@ -107,6 +108,26 @@ public class UsuarioController {
 					.body("Não é possível deletar o usuário, pois ele possui dados vinculados.");
 		}
 	}
+
+	@PostMapping("/criar")
+    public ResponseEntity<String> criarCadastro(@RequestBody UsuarioDTO usuarioDTO) {
+        if (usuRepository.findByEmail(usuarioDTO.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Erro: Email já cadastrado!");
+        }
+        if (usuRepository.findByCpf(usuarioDTO.getCpf()).isPresent()) {
+            return ResponseEntity.badRequest().body("Erro: CPF já cadastrado!");
+        }
+
+        UsuarioModel novoCadastro = new UsuarioModel();
+		novoCadastro.setLogin(usuarioDTO.getLogin());
+        novoCadastro.setNome(usuarioDTO.getNome());
+        novoCadastro.setEmail(usuarioDTO.getEmail());
+        novoCadastro.setSenha(usuarioDTO.getSenha());
+        novoCadastro.setCpf(usuarioDTO.getCpf());
+
+        usuRepository.save(novoCadastro);
+        return ResponseEntity.ok("Cadastro criado com sucesso!");
+    }
 
 	
 }
