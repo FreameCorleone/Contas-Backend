@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.ifba.demo.backend.api.dto.UsuarioDTO;
 import br.edu.ifba.demo.backend.api.model.EnderecoModel;
 import br.edu.ifba.demo.backend.api.model.UsuarioModel;
-import br.edu.ifba.demo.backend.api.repository.*;
+import br.edu.ifba.demo.backend.api.repository.EnderecoRepository;
+import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/usuario")
+@CrossOrigin(origins = "http://localhost:8080") // Permitir requisições do frontend
 public class UsuarioController {
 	
 	@Autowired
 	private UsuarioRepository usuRepository;
+	@Autowired
 	private EnderecoRepository enderecoRepository;
+
 	
 	public UsuarioController(UsuarioRepository usuRepository, EnderecoRepository enderecoRepository) {
 		this.usuRepository = usuRepository;
@@ -137,5 +142,18 @@ public class UsuarioController {
 		}
 	}
 
+	@PostMapping("/login")
+	public ResponseEntity<?> validarLogin(@RequestBody UsuarioDTO loginDTO) {
+		Optional<UsuarioModel> usuarioOpt = usuRepository.findByLogin(loginDTO.getLogin());
+
+		if (usuarioOpt.isPresent()) {
+			UsuarioModel usuario = usuarioOpt.get();
+			if (usuario.getSenha().equals(loginDTO.getSenha())) {
+				return ResponseEntity.ok(usuario); // Retorna o objeto do usuário
+			}
+		}
 		
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"erro\": \"Login ou senha inválidos\"}");
+	}
+
 }
