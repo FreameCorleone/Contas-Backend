@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifba.demo.backend.api.dto.UsuarioDTO;
+import br.edu.ifba.demo.backend.api.model.EnderecoModel;
 import br.edu.ifba.demo.backend.api.model.UsuarioModel;
 import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
+import br.edu.ifba.demo.backend.api.repository.*;
 
 @RestController
 @RequestMapping("/usuario")
@@ -25,9 +27,11 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioRepository usuRepository;
+	private EnderecoRepository enderecoRepository;
 	
-	public UsuarioController(UsuarioRepository usuRepository) {
+	public UsuarioController(UsuarioRepository usuRepository, EnderecoRepository enderecoRepository) {
 		this.usuRepository = usuRepository;
+		this.enderecoRepository = enderecoRepository;
 	}
 
 	@GetMapping
@@ -88,10 +92,30 @@ public class UsuarioController {
 
 
 	@PostMapping("/salvar")
-	  public ResponseEntity<UsuarioModel> addUsuario(@RequestBody UsuarioModel usuario) {
-		  UsuarioModel savedUsuario = usuRepository.save(usuario);
-		  return new ResponseEntity<>(savedUsuario, HttpStatus.CREATED);
+	public ResponseEntity<String> addUsuario(@RequestBody UsuarioModel usuario) {
+		// Verifica se já existe um usuário com o mesmo e-mail ou CPF
+		boolean emailExists = usuRepository.existsByEmail(usuario.getEmail());
+		boolean cpfExists = usuRepository.existsByCpf(usuario.getCpf());
+
+		if (emailExists || cpfExists) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body("Erro: Já existe um usuário cadastrado com este e-mail ou CPF.");
+		}
+
+		// Primeiro, salva o endereço antes de associá-lo ao usuário
+		if (usuario.getIdendereco() != null) {
+			EnderecoModel endereco = usuario.getIdendereco();
+			endereco = enderecoRepository.save(endereco); // Salva o endereço no banco
+			usuario.setIdendereco(endereco); // Associa o endereço salvo ao usuário
+		}
+
+		// Salva o usuário
+		usuRepository.save(usuario);
+
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body("Usuário criado com sucesso!");
 	}
+
 
 
 	@DeleteMapping("/delete/{id}")
@@ -109,25 +133,5 @@ public class UsuarioController {
 		}
 	}
 
-	@PostMapping("/criar")
-    public ResponseEntity<String> criarCadastro(@RequestBody UsuarioDTO usuarioDTO) {
-        if (usuRepository.findByEmail(usuarioDTO.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Erro: Email já cadastrado!");
-        }
-        if (usuRepository.findByCpf(usuarioDTO.getCpf()).isPresent()) {
-            return ResponseEntity.badRequest().body("Erro: CPF já cadastrado!");
-        }
-
-        UsuarioModel novoCadastro = new UsuarioModel();
-		novoCadastro.setLogin(usuarioDTO.getLogin());
-        novoCadastro.setNome(usuarioDTO.getNome());
-        novoCadastro.setEmail(usuarioDTO.getEmail());
-        novoCadastro.setSenha(usuarioDTO.getSenha());
-        novoCadastro.setCpf(usuarioDTO.getCpf());
-
-        usuRepository.save(novoCadastro);
-        return ResponseEntity.ok("Cadastro criado com sucesso!");
-    }
-
-	
+		
 }
