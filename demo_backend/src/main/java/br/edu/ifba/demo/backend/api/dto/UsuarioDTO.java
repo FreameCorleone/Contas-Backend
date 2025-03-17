@@ -16,7 +16,11 @@ public class UsuarioDTO {
     private String login;
     private String senha;
     private String estado;
-
+    private String cidade;
+    private String bairro;
+    private String rua;
+    private String numero;
+    private String cep;
 
     public static UsuarioDTO converter(UsuarioModel usuarioModel) {
         var usuario = new UsuarioDTO();
@@ -26,7 +30,12 @@ public class UsuarioDTO {
         usuario.setEmail(usuarioModel.getEmail());
         usuario.setLogin(usuarioModel.getLogin());
         usuario.setSenha(usuarioModel.getSenha());
-        usuario.setIdendereco(usuarioModel.getIdendereco().getIdendereco());
+        usuario.setEstado(usuarioModel.getIdendereco().getEstado());
+        usuario.setCidade(usuarioModel.getIdendereco().getCidade());
+        usuario.setBairro(usuarioModel.getIdendereco().getBairro());
+        usuario.setRua(usuarioModel.getIdendereco().getRua());
+        usuario.setNumero(usuarioModel.getIdendereco().getNumero());
+        usuario.setCep(usuarioModel.getIdendereco().getCep());
         return usuario;
     }
 
@@ -42,7 +51,8 @@ public class UsuarioDTO {
         super();
     }
 
-    public UsuarioDTO(long idusuario, String nome, String cpf, String email, String login, String senha, long idendereco) {
+    public UsuarioDTO(long idusuario, String nome, String cpf, String email, String login, String senha, 
+    String estado, String cidade, String bairro, String rua, String numero, String cep) {
         super();
         this.idusuario = idusuario;
         this.nome = nome;
@@ -50,7 +60,12 @@ public class UsuarioDTO {
         this.email = email;
         this.login = login;
         this.senha = senha;
-        this.idendereco = idendereco;
+        this.estado = estado;
+        this.cidade = cidade;
+        this.bairro = bairro;
+        this.rua = rua;
+        this.numero = numero;
+        this.cep = cep;
 
     }
 
