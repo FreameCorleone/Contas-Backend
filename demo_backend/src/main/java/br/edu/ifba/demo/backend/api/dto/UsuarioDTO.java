@@ -15,7 +15,7 @@ public class UsuarioDTO {
     private String email;
     private String login;
     private String senha;
-    private Long idendereco;
+    private String estado;
 
 
     public static UsuarioDTO converter(UsuarioModel usuarioModel) {

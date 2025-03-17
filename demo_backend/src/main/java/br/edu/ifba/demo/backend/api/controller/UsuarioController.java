@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.ifba.demo.backend.api.dto.UsuarioDTO;
 import br.edu.ifba.demo.backend.api.model.EnderecoModel;
 import br.edu.ifba.demo.backend.api.model.UsuarioModel;
-import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 import br.edu.ifba.demo.backend.api.repository.*;
 
 @RestController
@@ -91,7 +90,7 @@ public class UsuarioController {
     }
 
 
-	@PostMapping("/salvar")
+	@PostMapping("/criar")
 	public ResponseEntity<String> addUsuario(@RequestBody UsuarioModel usuario) {
 		// Verifica se já existe um usuário com o mesmo e-mail ou CPF
 		boolean emailExists = usuRepository.existsByEmail(usuario.getEmail());
@@ -116,6 +115,11 @@ public class UsuarioController {
 				.body("Usuário criado com sucesso!");
 	}
 
+	@PostMapping("/salvar")
+	  public ResponseEntity<UsuarioModel> atualizarUsuario(@RequestBody UsuarioModel usuario) {
+		  UsuarioModel savedUsuario = usuRepository.save(usuario);
+		  return new ResponseEntity<>(savedUsuario, HttpStatus.CREATED);
+	}
 
 
 	@DeleteMapping("/delete/{id}")
