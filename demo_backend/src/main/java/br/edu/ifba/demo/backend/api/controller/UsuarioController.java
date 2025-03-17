@@ -15,16 +15,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifba.demo.backend.api.dto.UsuarioDTO;
 import br.edu.ifba.demo.backend.api.model.EnderecoModel;
 import br.edu.ifba.demo.backend.api.model.UsuarioModel;
 import br.edu.ifba.demo.backend.api.repository.EnderecoRepository;
 import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/usuario")
-@CrossOrigin(origins = "http://localhost:8080") // Permitir requisições do frontend
+@CrossOrigin(origins = "http://localhost:8080")
 public class UsuarioController {
 	
 	@Autowired
@@ -44,10 +46,11 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/listall")
-	public List<UsuarioModel> listall() {
-		var usuarios = usuRepository.findAll();
-		return usuarios;
+	public ResponseEntity<List<UsuarioModel>> listAll() {
+		List<UsuarioModel> usuarios = usuRepository.findAll();
+		return ResponseEntity.ok(usuarios);
 	}
+
 	
 	@GetMapping("/listalldados")
 	public List<Object[]> getUsuarios(){
@@ -143,17 +146,31 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> validarLogin(@RequestBody UsuarioDTO loginDTO) {
+	public ResponseEntity<?> validarLogin(@RequestBody UsuarioDTO loginDTO, HttpSession session) {
 		Optional<UsuarioModel> usuarioOpt = usuRepository.findByLogin(loginDTO.getLogin());
 
 		if (usuarioOpt.isPresent()) {
 			UsuarioModel usuario = usuarioOpt.get();
 			if (usuario.getSenha().equals(loginDTO.getSenha())) {
-				return ResponseEntity.ok(usuario); // Retorna o objeto do usuário
+				session.setAttribute("usuarioLogado", usuario); // Armazena na sessão
+				return ResponseEntity.ok(usuario);
 			}
 		}
 		
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"erro\": \"Login ou senha inválidos\"}");
+	}
+
+	@GetMapping("/me")
+	public ModelAndView getUsuarioLogado(HttpSession session) {
+		UsuarioDTO usuarioLogado = (UsuarioDTO) session.getAttribute("usuarioLogado");
+
+		if (usuarioLogado == null) {
+			return new ModelAndView("redirect:/login"); // Redireciona se não estiver logado
+		}
+
+		ModelAndView model = new ModelAndView("usuario");
+		model.addObject("usuario", usuarioLogado);
+		return model;
 	}
 
 }
