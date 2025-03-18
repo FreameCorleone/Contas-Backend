@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifba.demo.backend.api.dto.UsuarioDTO;
 import br.edu.ifba.demo.backend.api.model.EnderecoModel;
@@ -102,7 +101,6 @@ public class UsuarioController {
 
 	@PostMapping("/criar")
 	public ResponseEntity<String> addUsuario(@RequestBody UsuarioModel usuario) {
-		// Verifica se já existe um usuário com o mesmo e-mail ou CPF
 		boolean emailExists = usuRepository.existsByEmail(usuario.getEmail());
 		boolean cpfExists = usuRepository.existsByCpf(usuario.getCpf());
 
@@ -111,14 +109,12 @@ public class UsuarioController {
 					.body("Erro: Já existe um usuário cadastrado com este e-mail ou CPF.");
 		}
 
-		// Primeiro, salva o endereço antes de associá-lo ao usuário
 		if (usuario.getIdendereco() != null) {
 			EnderecoModel endereco = usuario.getIdendereco();
 			endereco = enderecoRepository.save(endereco); // Salva o endereço no banco
 			usuario.setIdendereco(endereco); // Associa o endereço salvo ao usuário
 		}
 
-		// Salva o usuário
 		usuRepository.save(usuario);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
@@ -160,19 +156,6 @@ public class UsuarioController {
 		}
 		
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"erro\": \"Login ou senha inválidos\"}");
-	}
-
-	@GetMapping("/me")
-	public ModelAndView getUsuarioLogado(HttpSession session) {
-		UsuarioDTO usuarioLogado = (UsuarioDTO) session.getAttribute("usuarioLogado");
-
-		if (usuarioLogado == null) {
-			return new ModelAndView("redirect:/login"); // Redireciona se não estiver logado
-		}
-
-		ModelAndView model = new ModelAndView("usuario");
-		model.addObject("usuario", usuarioLogado);
-		return model;
 	}
 
 }
