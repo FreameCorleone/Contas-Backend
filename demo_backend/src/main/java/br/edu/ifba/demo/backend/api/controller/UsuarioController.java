@@ -46,11 +46,11 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/listall")
-	public ResponseEntity<List<UsuarioModel>> listAll() {
-		List<UsuarioModel> usuarios = usuRepository.findAll();
-		return ResponseEntity.ok(usuarios);
+	public List<UsuarioModel> listall() {
+		var usuarios = usuRepository.findAll();
+		return usuarios;
 	}
-
+	
 	
 	@GetMapping("/listalldados")
 	public List<Object[]> getUsuarios(){
