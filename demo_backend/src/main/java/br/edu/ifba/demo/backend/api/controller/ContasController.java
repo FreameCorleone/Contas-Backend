@@ -102,20 +102,22 @@ public class ContasController {
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
-		System.out.println("Recebida requisição DELETE para ID: " + id); // Log para depuração
+		System.out.println("Recebida requisição DELETE para ID: " + id);
+
 		if (!contasRepository.existsById(id)) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada.");
 		}
 
 		try {
 			contasRepository.deleteById(id);
-			System.out.println("Conta excluída com sucesso!"); // Confirmação de exclusão no log
-			return ResponseEntity.noContent().build();
+			System.out.println("Conta excluída com sucesso!");
+			return ResponseEntity.ok("Conta excluída com sucesso!");
 		} catch (DataIntegrityViolationException e) {
 			System.err.println("Erro ao excluir: " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body("Não é possível deletar a conta, pois há dados vinculados.");
+					.body("Não é possível excluir a conta, pois há parcelas vinculadas a ela.");
 		}
 	}
+
 
 }
