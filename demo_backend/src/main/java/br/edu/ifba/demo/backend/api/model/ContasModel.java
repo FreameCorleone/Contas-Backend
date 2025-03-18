@@ -2,6 +2,7 @@ package br.edu.ifba.demo.backend.api.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,11 +41,11 @@ public class ContasModel {
     @Column(name = "status_contas", nullable = false)
     private boolean statuscontas;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idusuario", nullable = false)
     private UsuarioModel idusuario;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idcategoria", nullable = false)
     private CategoriaModel idcategoria;
 

@@ -31,8 +31,12 @@ public class ContasDTO {
         contas.setTipoconta(contasModel.getTipoconta());
         contas.setStatuscontas(contasModel.isStatuscontas());
         contas.setIdusuario(contasModel.getIdusuario().getIdusuario());
+
+        if(contasModel.getIdcategoria()!=null){
         contas.setCategoriadescricao(contasModel.getIdcategoria().getCategoriadescricao());
         contas.setTipo(contasModel.getIdcategoria().getTipo());
+        }
+
         return contas;
     }
 
