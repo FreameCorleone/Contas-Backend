@@ -47,8 +47,8 @@ public class CategoriaController {
     }
 
     @GetMapping("buscarpordescricao/{descricao}")
-    public List<CategoriaModel> findByDescricao(@PathVariable("descricao") String descricao) {
-        List<CategoriaModel> categoria = categoriaRepository.findByDescricao(descricao);
+    public List<CategoriaModel> findByCategoriadescricao(@PathVariable("descricao") String descricao) {
+        List<CategoriaModel> categoria = categoriaRepository.findByCategoriadescricao(descricao);
         if (categoria.isEmpty()) {
             return null;
         }

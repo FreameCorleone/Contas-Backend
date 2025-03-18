@@ -18,7 +18,8 @@ public class ContasDTO {
     private String tipoconta;
     private boolean statuscontas;
     private Long idusuario;
-    private Long idcategoria;
+    private String categoriadescricao;
+    private String tipo;
 
     public static ContasDTO converter(ContasModel contasModel){
         var contas = new ContasDTO();
@@ -30,7 +31,8 @@ public class ContasDTO {
         contas.setTipoconta(contasModel.getTipoconta());
         contas.setStatuscontas(contasModel.isStatuscontas());
         contas.setIdusuario(contasModel.getIdusuario().getIdusuario());
-        contas.setIdcategoria(contasModel.getIdcategoria().getIdcategoria());
+        contas.setCategoriadescricao(contasModel.getIdcategoria().getCategoriadescricao());
+        contas.setTipo(contasModel.getIdcategoria().getTipo());
         return contas;
     }
 
@@ -46,7 +48,8 @@ public class ContasDTO {
         super();
     }
 
-    public ContasDTO(long idcontas, String descricao, float valor, LocalDate  datavencimento, LocalDate  datapagamento, String tipoconta, boolean statuscontas, Long idusuario, Long idcategoria){
+    public ContasDTO(long idcontas, String descricao, float valor, LocalDate  datavencimento, LocalDate  datapagamento, String tipoconta, boolean statuscontas, Long idusuario, 
+    String categoriadescricao, String tipo){
         super();
         this.idcontas = idcontas;
         this.descricao = descricao;
@@ -56,7 +59,8 @@ public class ContasDTO {
         this.tipoconta = tipoconta;
         this.statuscontas = statuscontas;
         this.idusuario = idusuario;
-        this.idcategoria = idcategoria;
+        this.categoriadescricao = categoriadescricao;
+        this.tipo = tipo;
     }
     
 }

@@ -6,13 +6,13 @@ import lombok.Data;
 @Data
 public class CategoriaDTO {
     private Long idcategoria;
-    private String descricao;
+    private String categoriadescricao;
     private String tipo;
 
     public static CategoriaDTO converter(CategoriaModel categoriaModel){
         CategoriaDTO categoria = new CategoriaDTO();
         categoria.setIdcategoria(categoriaModel.getIdcategoria());
-        categoria.setDescricao(categoriaModel.getDescricao());
+        categoria.setCategoriadescricao(categoriaModel.getCategoriadescricao());
         categoria.setTipo(categoriaModel.getTipo());
         return categoria;
     }

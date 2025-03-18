@@ -11,7 +11,7 @@ public interface CategoriaRepository
     extends JpaRepository<CategoriaModel, Long>
 {
 
-    List<CategoriaModel> findByDescricao(String descricao);
+    List<CategoriaModel> findByCategoriadescricao(String categoriadescricao);
     List <CategoriaModel> findByTipo(String tipo);
     
 }

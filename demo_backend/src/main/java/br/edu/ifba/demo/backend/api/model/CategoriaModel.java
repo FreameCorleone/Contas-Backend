@@ -18,7 +18,7 @@ public class CategoriaModel {
     private long idcategoria;
 
     @Column(name = "descricao", nullable = false)
-    private String descricao;
+    private String categoriadescricao;
 
     @Column(name = "tipo", nullable = false)
     private String tipo;
@@ -27,10 +27,10 @@ public class CategoriaModel {
         super();
     }
 
-    public CategoriaModel(long idcategoria, String descricao, String tipo){
+    public CategoriaModel(long idcategoria, String categoriadescricao, String tipo){
         super();
         this.idcategoria = idcategoria;
-        this.descricao = descricao;
+        this.categoriadescricao = categoriadescricao;
         this.tipo = tipo;
     }
 }
