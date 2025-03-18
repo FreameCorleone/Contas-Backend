@@ -10,16 +10,14 @@ import lombok.Data;
 public class TelefoneDTO {
 
     private long idtelefone;
-    private String numero;
+    private String telefonenumero;
     private String tiponumero;
-    private Long idUsuario;
 
     public static TelefoneDTO converter(TelefoneModel telefoneModel){
         var telefone = new TelefoneDTO();
         telefone.setIdtelefone(telefoneModel.getIdtelefone());
-        telefone.setNumero(telefoneModel.getNumero());
+        telefone.setTelefonenumero(telefoneModel.getTelefonenumero());
         telefone.setTiponumero(telefoneModel.getTiponumero());
-        telefone.setIdUsuario(telefoneModel.getIdUsuario().getIdusuario());
         return telefone;
     }
 
@@ -36,11 +34,10 @@ public class TelefoneDTO {
         super();
     }
 
-    public TelefoneDTO(long idtelefone, String numero, String tiponumero, long idUsuario) {
+    public TelefoneDTO(long idtelefone, String telefonenumero, String tiponumero) {
         super();
         this.idtelefone = idtelefone;
-        this.numero = numero;
+        this.telefonenumero = telefonenumero;
         this.tiponumero = tiponumero;
-        this.idUsuario = idUsuario;
     }
 }

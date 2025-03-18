@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifba.demo.backend.api.dto.UsuarioDTO;
 import br.edu.ifba.demo.backend.api.model.EnderecoModel;
+import br.edu.ifba.demo.backend.api.model.TelefoneModel;
 import br.edu.ifba.demo.backend.api.model.UsuarioModel;
 import br.edu.ifba.demo.backend.api.repository.EnderecoRepository;
+import br.edu.ifba.demo.backend.api.repository.TelefoneRepository;
 import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 
@@ -32,6 +34,8 @@ public class UsuarioController {
 	private UsuarioRepository usuRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private TelefoneRepository telefoneRepository;
 
 	
 	public UsuarioController(UsuarioRepository usuRepository, EnderecoRepository enderecoRepository) {
@@ -98,35 +102,79 @@ public class UsuarioController {
         return null;
     }
 
-
 	@PostMapping("/criar")
-	public ResponseEntity<String> addUsuario(@RequestBody UsuarioModel usuario) {
-		boolean emailExists = usuRepository.existsByEmail(usuario.getEmail());
-		boolean cpfExists = usuRepository.existsByCpf(usuario.getCpf());
+	public ResponseEntity<?> criarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+		try {
+			// Validação: Verifica se já existe um usuário com o mesmo e-mail ou CPF
+			if (usuRepository.existsByEmail(usuarioDTO.getEmail())) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro: Já existe um usuário cadastrado com este e-mail.");
+			}
+			if (usuRepository.existsByCpf(usuarioDTO.getCpf())) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro: Já existe um usuário cadastrado com este CPF.");
+			}
 
-		if (emailExists || cpfExists) {
-			return ResponseEntity.status(HttpStatus.CONFLICT)
-					.body("Erro: Já existe um usuário cadastrado com este e-mail ou CPF.");
+			// Criando endereço
+			EnderecoModel endereco = new EnderecoModel();
+			endereco.setEstado(usuarioDTO.getEstado());
+			endereco.setCidade(usuarioDTO.getCidade());
+			endereco.setBairro(usuarioDTO.getBairro());
+			endereco.setRua(usuarioDTO.getRua());
+			endereco.setNumero(usuarioDTO.getNumero());
+			endereco.setCep(usuarioDTO.getCep());
+
+			// Criando telefone
+			TelefoneModel telefone = new TelefoneModel();
+			telefone.setTelefonenumero(usuarioDTO.getTelefonenumero());
+			telefone.setTiponumero(usuarioDTO.getTiponumero());
+
+			// Salvando endereço e telefone primeiro
+			enderecoRepository.save(endereco);
+			telefoneRepository.save(telefone);
+
+			// Criando usuário
+			UsuarioModel usuario = new UsuarioModel();
+			usuario.setNome(usuarioDTO.getNome());
+			usuario.setCpf(usuarioDTO.getCpf());
+			usuario.setEmail(usuarioDTO.getEmail());
+			usuario.setLogin(usuarioDTO.getLogin());
+			usuario.setSenha(usuarioDTO.getSenha());
+			usuario.setIdendereco(endereco);
+			usuario.setIdtelefone(telefone);
+
+			// Salvando usuário no banco
+			UsuarioModel usuarioSalvo = usuRepository.save(usuario);
+
+			return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioDTO.converter(usuarioSalvo));
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar usuário: " + e.getMessage());
 		}
-
-		if (usuario.getIdendereco() != null) {
-			EnderecoModel endereco = usuario.getIdendereco();
-			endereco = enderecoRepository.save(endereco); // Salva o endereço no banco
-			usuario.setIdendereco(endereco); // Associa o endereço salvo ao usuário
-		}
-
-		usuRepository.save(usuario);
-
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body("Usuário criado com sucesso!");
 	}
+
 
 	@PostMapping("/salvar")
-	  public ResponseEntity<UsuarioModel> atualizarUsuario(@RequestBody UsuarioModel usuario) {
-		  UsuarioModel savedUsuario = usuRepository.save(usuario);
-		  return new ResponseEntity<>(savedUsuario, HttpStatus.CREATED);
-	}
+	public ResponseEntity<?> atualizarUsuario(@RequestBody UsuarioModel usuario) {
+		System.out.println("Recebido: " + usuario);
+		
+		if (usuario.getIdusuario() == 0 || !usuRepository.existsById(usuario.getIdusuario())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: Usuário não encontrado.");
+		}
 
+		// Garantindo que Endereço e Telefone sejam salvos antes
+		if (usuario.getIdendereco() != null) {
+			EnderecoModel endereco = usuario.getIdendereco();
+			endereco = enderecoRepository.save(endereco);
+			usuario.setIdendereco(endereco);
+		}
+
+		if (usuario.getIdtelefone() != null) {
+			// Criar um repositório para telefone e salvar
+			// telefoneRepository.save(usuario.getIdtelefone());
+		}
+
+		UsuarioModel savedUsuario = usuRepository.save(usuario);
+		return new ResponseEntity<>(savedUsuario, HttpStatus.OK);
+	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {

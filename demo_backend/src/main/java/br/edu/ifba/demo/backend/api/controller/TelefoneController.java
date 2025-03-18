@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,8 +49,8 @@ public class TelefoneController {
     }
 
 	@GetMapping("buscarpornumero/{numero}")
-    public TelefoneModel findByNumero(@PathVariable("numero") String numero) {
-		Optional<TelefoneModel> telefone = telefoneRepository.findByNumero(numero);
+    public TelefoneModel findByTelefonenumero(@PathVariable("numero") String numero) {
+		Optional<TelefoneModel> telefone = telefoneRepository.findByTelefonenumero(numero);
 		if ( telefone.isPresent() )
 			return telefone.get();
         return null;
@@ -64,17 +65,6 @@ public class TelefoneController {
         return telefones;
     }
 
-    @GetMapping("/buscarporusuario/{idUsuario}")
-    public ResponseEntity<List<TelefoneModel>> getTelefonesPorUsuario(@PathVariable Long idUsuario) {
-        List<TelefoneModel> telefones = telefoneRepository.findByIdUsuario_Idusuario(idUsuario);
-
-        if (telefones.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(telefones);
-    }
-
     @PostMapping("/salvar")
     public ResponseEntity<TelefoneModel> addTelefone(@RequestBody TelefoneModel telefones) {
         TelefoneModel savedTelefone = telefoneRepository.save(telefones);
@@ -84,14 +74,19 @@ public class TelefoneController {
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable ("id") Long id){
-        if(telefoneRepository.existsById(id)){
-            telefoneRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+        try {
+            if (telefoneRepository.existsById(id)) {
+                telefoneRepository.deleteById(id);
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Telefone não encontrado.");
+            }
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Não é possível deletar o telefone pois está vinculado a um usuário.");
         }
     }
+
     
 }

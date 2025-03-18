@@ -13,8 +13,7 @@ public interface TelefoneRepository
     extends JpaRepository<TelefoneModel, Long> 
 {
     
-    Optional<TelefoneModel> findByNumero(String numero);
+    Optional<TelefoneModel> findByTelefonenumero(String telefonenumero);
     List<TelefoneModel> findByTiponumero(String tiponumero);
-    List<TelefoneModel> findByIdUsuario_Idusuario(Long idUsuario);
 
 }

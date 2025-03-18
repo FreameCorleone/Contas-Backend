@@ -1,5 +1,6 @@
 package br.edu.ifba.demo.backend.api.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,15 +35,19 @@ public class UsuarioModel {
     @Column(name = "senha", nullable = false)
     private String senha;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idendereco", nullable = false)
     private EnderecoModel idendereco;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idtelefone", nullable = false)
+    private TelefoneModel idtelefone;
 
     public UsuarioModel() {
         super();
     }
 
-    public UsuarioModel(long idusuario, String nome, String cpf, String email, String login, String senha, EnderecoModel idendereco) {
+    public UsuarioModel(long idusuario, String nome, String cpf, String email, String login, String senha, EnderecoModel idendereco, TelefoneModel idtelefone) {
         super();
         this.idusuario = idusuario;
         this.nome = nome;
@@ -51,6 +56,7 @@ public class UsuarioModel {
         this.login = login;
         this.senha = senha;
         this.idendereco = idendereco;
+        this.idtelefone = idtelefone;
     }
 
 }
