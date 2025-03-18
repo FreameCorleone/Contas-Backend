@@ -40,8 +40,8 @@ public class ParcelaController {
 	}
 
 	@GetMapping("/buscarporvencimento/{datavencimento}")
-    public ResponseEntity<List<ParcelaModel>> findByDatavencimento(@PathVariable LocalDate  datavencimento) {
-		List<ParcelaModel> parcela = parcelaRepository.findByDatavencimento(datavencimento);
+    public ResponseEntity<List<ParcelaModel>> findByParceladatavencimento(@PathVariable LocalDate  datavencimento) {
+		List<ParcelaModel> parcela = parcelaRepository.findByParceladatavencimento(datavencimento);
         return ResponseEntity.ok(parcela);
 	}
 

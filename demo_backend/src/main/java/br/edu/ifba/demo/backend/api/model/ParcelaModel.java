@@ -23,7 +23,7 @@ public class ParcelaModel {
     private Long idparcela;
 
     @Column(name = "data_vencimento", nullable = false)
-    private LocalDate  datavencimento;
+    private LocalDate  parceladatavencimento;
 
     @Column(name = "numero_parcela", nullable = false)
     private int numeroparcela;
@@ -39,10 +39,10 @@ public class ParcelaModel {
         super();
     }
 
-    public ParcelaModel(long idparcela, LocalDate datavencimento, int numeroparcela, double valorparcela, ContasModel idcontas){
+    public ParcelaModel(long idparcela, LocalDate parceladatavencimento, int numeroparcela, double valorparcela, ContasModel idcontas){
         super();
         this.idparcela = idparcela;
-        this.datavencimento = datavencimento;
+        this.parceladatavencimento = parceladatavencimento;
         this.numeroparcela = numeroparcela;
         this.valorparcela = valorparcela;
         this.idcontas = idcontas;

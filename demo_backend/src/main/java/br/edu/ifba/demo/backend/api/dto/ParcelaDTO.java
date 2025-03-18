@@ -11,18 +11,29 @@ import lombok.Data;
 public class ParcelaDTO {
 
     private long idparcela;
-    private LocalDate  datavencimento;
+    private LocalDate parceladatavencimento;
     private int numeroparcela;
     private double valorparcela;
     private Long idcontas;
+    private String descricao;
+    private float valor;
+    private LocalDate  datavencimento;
+    private LocalDate datapagamento;
+    private String tipoconta;
+    private boolean statuscontas;
 
     public static ParcelaDTO converter(ParcelaModel parcelaModel){
         var parcela = new ParcelaDTO();
         parcela.setIdparcela(parcelaModel.getIdparcela());
-        parcela.setDatavencimento(parcelaModel.getDatavencimento());
+        parcela.setParceladatavencimento(parcelaModel.getParceladatavencimento());
         parcela.setNumeroparcela(parcelaModel.getNumeroparcela());
         parcela.setValorparcela(parcelaModel.getValorparcela());
-        parcela.setIdcontas(parcelaModel.getIdcontas().getIdcontas());
+        parcela.setDescricao(parcelaModel.getIdcontas().getDescricao());
+        parcela.setValor(parcelaModel.getIdcontas().getValor());
+        parcela.setDatapagamento(parcelaModel.getIdcontas().getDatapagamento());
+        parcela.setDatavencimento(parcelaModel.getIdcontas().getDatavencimento());
+        parcela.setTipoconta(parcelaModel.getIdcontas().getTipoconta());
+        parcela.setStatuscontas(parcelaModel.getIdcontas().isStatuscontas());
         return parcela;
     }
 
@@ -39,13 +50,20 @@ public class ParcelaDTO {
         super();
     }
 
-    public ParcelaDTO(long idparcela, LocalDate datavencimento, int numeroparcela, double valorparcela, Long idcontas){
+    public ParcelaDTO(long idparcela, LocalDate parceladatavencimento, int numeroparcela, double valorparcela, Long idcontas,
+    String descricao, float valor, LocalDate  datavencimento, LocalDate  datapagamento, String tipoconta, boolean statuscontas){
         super();
         this.idparcela = idparcela;
-        this.datavencimento = datavencimento;
+        this.parceladatavencimento = parceladatavencimento;
         this.numeroparcela = numeroparcela;
         this.valorparcela = valorparcela;
         this.idcontas = idcontas;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.datavencimento = datavencimento;
+        this.datapagamento = datapagamento;
+        this.tipoconta = tipoconta;
+        this.statuscontas = statuscontas;
     }
     
 }

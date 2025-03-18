@@ -13,7 +13,7 @@ public interface ParcelaRepository
     extends JpaRepository<ParcelaModel, Long>
 {
 
-    List<ParcelaModel> findByDatavencimento(LocalDate datavencimento);
+    List<ParcelaModel> findByParceladatavencimento(LocalDate parceladatavencimento);
     List<ParcelaModel> findByIdcontas_Idcontas(Long idcontas);
     
 }
