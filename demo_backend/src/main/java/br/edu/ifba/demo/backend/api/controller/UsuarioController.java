@@ -53,9 +53,11 @@ public class UsuarioController {
 	
 	
 	@GetMapping("/listalldados")
-	public List<Object[]> getUsuarios(){
-		return usuRepository.getUsuarioDados();
+	public List<UsuarioDTO> getUsuarios(){
+		List<UsuarioModel> usuarios = usuRepository.findAll();
+		return UsuarioDTO.converter(usuarios);
 	}
+
 
 	@GetMapping("buscarporid/{id}")
     public UsuarioModel findById(@PathVariable("id") Long id) {
