@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifba.demo.backend.api.model.ContasModel;
-import br.edu.ifba.demo.backend.api.model.ParcelaModel;
 import br.edu.ifba.demo.backend.api.repository.ContasRepository;
-import br.edu.ifba.demo.backend.api.repository.ParcelaRepository;
 
 @RestController
 @RequestMapping("/contas")
@@ -26,11 +25,9 @@ public class ContasController {
     
     @Autowired
     private ContasRepository contasRepository;
-	private ParcelaRepository parcelaRepository;
 
-    public ContasController(ContasRepository contasRepository, ParcelaRepository parcelaRepository){
+    public ContasController(ContasRepository contasRepository){
         this.contasRepository = contasRepository;
-		this.parcelaRepository = parcelaRepository;
     }
 
     @GetMapping
@@ -104,18 +101,21 @@ public class ContasController {
     }
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deletarById(@PathVariable ("id") Long id) {
+	public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+		System.out.println("Recebida requisição DELETE para ID: " + id); // Log para depuração
 		if (!contasRepository.existsById(id)) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada.");
 		}
 
-		List<ParcelaModel> parcelas = parcelaRepository.findByIdcontas_Idcontas(id);
-		if (!parcelas.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não é possível excluir a conta. Há parcelas associadas.");
+		try {
+			contasRepository.deleteById(id);
+			System.out.println("Conta excluída com sucesso!"); // Confirmação de exclusão no log
+			return ResponseEntity.noContent().build();
+		} catch (DataIntegrityViolationException e) {
+			System.err.println("Erro ao excluir: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("Não é possível deletar a conta, pois há dados vinculados.");
 		}
-
-		contasRepository.deleteById(id);
-		return ResponseEntity.noContent().build();
 	}
 
 }

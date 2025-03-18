@@ -45,7 +45,7 @@ public class ContasModel {
     @JoinColumn(name = "idusuario", nullable = false)
     private UsuarioModel idusuario;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "idcategoria", nullable = false)
     private CategoriaModel idcategoria;
 
