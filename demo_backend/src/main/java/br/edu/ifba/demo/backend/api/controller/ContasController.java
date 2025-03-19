@@ -19,6 +19,7 @@ import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/contas")
+@CrossOrigin(origins = "http://localhost:8080")
 public class ContasController {
 
     @Autowired
