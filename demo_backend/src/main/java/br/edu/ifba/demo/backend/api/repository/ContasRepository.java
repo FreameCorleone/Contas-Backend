@@ -21,6 +21,7 @@ public interface ContasRepository
     List<ContasModel> findByIdusuarioIdusuario(Long idusuario);
     List<ContasModel> findByIdusuario_Nome(String nome);
     List<ContasModel> findByIdcategoriaIdcategoria(Long idcategoria);
+    
 
 
 }

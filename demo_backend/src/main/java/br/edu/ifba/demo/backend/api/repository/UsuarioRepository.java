@@ -19,6 +19,8 @@ public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
     boolean existsByEmail(String email);
     boolean existsByCpf(String cpf);
     boolean existsByLogin(String login);
+    Optional<UsuarioModel> findById(Long id);
+
 
     @Query(value = "SELECT u.idusuario, u.nome, u.cpf, u.email, u.login, u.senha, " +
                    "e.estado, e.cidade, e.bairro, e.rua, e.numero, e.cep, " +

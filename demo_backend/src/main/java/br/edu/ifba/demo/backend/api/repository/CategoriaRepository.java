@@ -1,6 +1,7 @@
 package br.edu.ifba.demo.backend.api.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,5 +14,5 @@ public interface CategoriaRepository
 
     List<CategoriaModel> findByCategoriadescricao(String categoriadescricao);
     List <CategoriaModel> findByTipo(String tipo);
-    
+    Optional<CategoriaModel> findById(Long id);
 }

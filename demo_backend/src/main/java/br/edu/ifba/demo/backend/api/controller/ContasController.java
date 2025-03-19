@@ -2,122 +2,116 @@ package br.edu.ifba.demo.backend.api.controller;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import br.edu.ifba.demo.backend.api.dto.ContasDTO;
+import br.edu.ifba.demo.backend.api.model.CategoriaModel;
 import br.edu.ifba.demo.backend.api.model.ContasModel;
+import br.edu.ifba.demo.backend.api.model.UsuarioModel;
+import br.edu.ifba.demo.backend.api.repository.CategoriaRepository;
 import br.edu.ifba.demo.backend.api.repository.ContasRepository;
+import br.edu.ifba.demo.backend.api.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/contas")
 public class ContasController {
-    
+
     @Autowired
     private ContasRepository contasRepository;
 
-    public ContasController(ContasRepository contasRepository){
-        this.contasRepository = contasRepository;
-    }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     @GetMapping
-	public String teste() {
-		return "Testando Rota contas";
-	}
-	
-	@GetMapping("/listall")
-	public List<ContasModel> listall() {
-		var contas = contasRepository.findAll();
-		return contas;
-	}
+    public String teste() {
+        return "Testando Rota contas";
+    }
+
+    @GetMapping("/listall")
+    public List<ContasModel> listAll() {
+        return contasRepository.findAll();
+    }
 
     @GetMapping("/buscarporid/{id}")
-	public ContasModel findById(@PathVariable("id") Long id) {
-		Optional<ContasModel> contas = contasRepository.findById(id);
-		if (contas.isPresent()){
-			return contas.get();
-		}
-
-		return null;
-	}
-
-	@GetMapping("/buscarportipoconta/{tipoConta}")
-	public ResponseEntity<List<ContasModel>> findByTipoconta(@PathVariable String tipoConta) {
-		List<ContasModel> contas = contasRepository.findByTipoconta(tipoConta);
-		return ResponseEntity.ok(contas);
-	}
-
-	@GetMapping("/buscarporstatuscontas/{statuscontas}")
-	public ResponseEntity<List<ContasModel>> findByStatuscontas(@PathVariable Boolean statuscontas) {
-		List<ContasModel> contas = contasRepository.findByStatuscontas(statuscontas);
-		return ResponseEntity.ok(contas);
-	}
-
-	@GetMapping("/buscarporvencimento/{datavencimento}")
-    public ResponseEntity<List<ContasModel>> findByDatavencimento(@PathVariable LocalDate  datavencimento) {
-        List<ContasModel> contas = contasRepository.findByDatavencimento(datavencimento);
-        return ResponseEntity.ok(contas);
+    public ResponseEntity<ContasModel> findById(@PathVariable("id") Long id) {
+        return contasRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-	@GetMapping("/buscarporpagamento/{datapagamento}")
-    public ResponseEntity<List<ContasModel>> findByDatapagamento(@PathVariable LocalDate  datapagamento) {
-        List<ContasModel> contas = contasRepository.findByDatapagamento(datapagamento);
-        return ResponseEntity.ok(contas);
+    @GetMapping("/buscarportipoconta/{tipoConta}")
+    public ResponseEntity<List<ContasModel>> findByTipoconta(@PathVariable String tipoConta) {
+        return ResponseEntity.ok(contasRepository.findByTipoconta(tipoConta));
     }
 
-	@GetMapping("/buscarporidusuario/{idusuario}")
+    @GetMapping("/buscarporstatuscontas/{statuscontas}")
+    public ResponseEntity<List<ContasModel>> findByStatuscontas(@PathVariable Boolean statuscontas) {
+        return ResponseEntity.ok(contasRepository.findByStatuscontas(statuscontas));
+    }
+
+    @GetMapping("/buscarporvencimento/{datavencimento}")
+    public ResponseEntity<List<ContasModel>> findByDatavencimento(@PathVariable LocalDate datavencimento) {
+        return ResponseEntity.ok(contasRepository.findByDatavencimento(datavencimento));
+    }
+
+    @GetMapping("/buscarporpagamento/{datapagamento}")
+    public ResponseEntity<List<ContasModel>> findByDatapagamento(@PathVariable LocalDate datapagamento) {
+        return ResponseEntity.ok(contasRepository.findByDatapagamento(datapagamento));
+    }
+
+    @GetMapping("/buscarporidusuario/{idusuario}")
     public ResponseEntity<List<ContasModel>> buscarPorUsuario(@PathVariable Long idusuario) {
-        List<ContasModel> contas = contasRepository.findByIdusuarioIdusuario(idusuario);
-        return ResponseEntity.ok(contas);
+        return ResponseEntity.ok(contasRepository.findByIdusuarioIdusuario(idusuario));
     }
 
-	@GetMapping("/buscarpornomeusuario/{nome}")
-	public ResponseEntity<List<ContasModel>> buscarPorNome(@PathVariable String nome) {
-		List<ContasModel> contas = contasRepository.findByIdusuario_Nome(nome);
-		return ResponseEntity.ok(contas);
-	}
+    @GetMapping("/buscarpornomeusuario/{nome}")
+    public ResponseEntity<List<ContasModel>> buscarPorNome(@PathVariable String nome) {
+        return ResponseEntity.ok(contasRepository.findByIdusuario_Nome(nome));
+    }
 
-
-	@GetMapping("/buscarporcategoria/{idcategoria}")
+    @GetMapping("/buscarporcategoria/{idcategoria}")
     public ResponseEntity<List<ContasModel>> buscarPorCategoria(@PathVariable Long idcategoria) {
-        List<ContasModel> contas = contasRepository.findByIdcategoriaIdcategoria(idcategoria);
-        return ResponseEntity.ok(contas);
+        return ResponseEntity.ok(contasRepository.findByIdcategoriaIdcategoria(idcategoria));
     }
 
-	@PostMapping("/salvar")
-    public ResponseEntity<ContasModel> addContas(@RequestBody ContasModel contas) {
-        ContasModel savedContas = contasRepository.save(contas);
-        return new ResponseEntity<>(savedContas, HttpStatus.CREATED);
+    @PostMapping("/salvar")
+public ResponseEntity<?> addContas(@RequestBody ContasDTO contasDTO) {
+    // Buscar usuário e categoria pelo ID antes de salvar
+    UsuarioModel usuario = usuarioRepository.findById(contasDTO.getIdusuario())
+        .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+    CategoriaModel categoria = categoriaRepository.findById(contasDTO.getIdcategoria())
+        .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+
+    // Converter DTO para Entidade
+    ContasModel contas = contasDTO.toEntity(usuario, categoria);
+
+    // Salvar conta
+    ContasModel savedContas = contasRepository.save(contas);
+    return new ResponseEntity<>(savedContas, HttpStatus.CREATED);
+}
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+        if (!contasRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada.");
+        }
+
+        try {
+            contasRepository.deleteById(id);
+            return ResponseEntity.ok("Conta excluída com sucesso!");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Não é possível excluir a conta, pois há parcelas vinculadas a ela.");
+        }
     }
-
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
-		System.out.println("Recebida requisição DELETE para ID: " + id);
-
-		if (!contasRepository.existsById(id)) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada.");
-		}
-
-		try {
-			contasRepository.deleteById(id);
-			System.out.println("Conta excluída com sucesso!");
-			return ResponseEntity.ok("Conta excluída com sucesso!");
-		} catch (DataIntegrityViolationException e) {
-			System.err.println("Erro ao excluir: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body("Não é possível excluir a conta, pois há parcelas vinculadas a ela.");
-		}
-	}
-
-
 }
