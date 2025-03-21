@@ -31,21 +31,27 @@ public class ParcelaModel {
     @Column(name = "valor_parcela", nullable = false)
     private double valorparcela;
 
+    @Column(name = "status_parcela", nullable = false)
+    private String status_parcela;
+    
+
     @ManyToOne
     @JoinColumn(name = "idcontas", nullable = false)
     private ContasModel idcontas;
+    
 
     public ParcelaModel(){
         super();
     }
 
-    public ParcelaModel(long idparcela, LocalDate parceladatavencimento, int numeroparcela, double valorparcela, ContasModel idcontas){
+    public ParcelaModel(long idparcela, LocalDate parceladatavencimento, int numeroparcela, double valorparcela, ContasModel idcontas, String status_parcela){
         super();
         this.idparcela = idparcela;
         this.parceladatavencimento = parceladatavencimento;
         this.numeroparcela = numeroparcela;
         this.valorparcela = valorparcela;
         this.idcontas = idcontas;
+        this.status_parcela = status_parcela;
     }
 
 }

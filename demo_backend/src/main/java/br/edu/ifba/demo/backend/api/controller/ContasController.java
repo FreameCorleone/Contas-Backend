@@ -101,6 +101,36 @@ public ResponseEntity<?> addContas(@RequestBody ContasDTO contasDTO) {
 }
 
 
+@PutMapping("/atualizar/{id}")
+public ResponseEntity<?> updateContas(@PathVariable Long id, @RequestBody ContasDTO contasDTO) {
+    if (!contasRepository.existsById(id)) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada.");
+    }
+
+    // Buscar usuário e categoria pelo ID
+    UsuarioModel usuario = usuarioRepository.findById(contasDTO.getIdusuario())
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    CategoriaModel categoria = categoriaRepository.findById(contasDTO.getIdcategoria())
+            .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+
+    // Buscar a conta existente
+    ContasModel contaExistente = contasRepository.findById(id).get();
+
+    // Atualizar os campos
+    contaExistente.setDescricao(contasDTO.getDescricao());
+    contaExistente.setValor(contasDTO.getValor());
+    contaExistente.setDatavencimento(contasDTO.getDatavencimento());
+    contaExistente.setDatapagamento(contasDTO.getDatapagamento());
+    contaExistente.setTipoconta(contasDTO.getTipoconta());
+    contaExistente.setStatuscontas(contasDTO.isStatuscontas());
+    contaExistente.setIdusuario(usuario);
+    contaExistente.setIdcategoria(categoria);
+
+    // Salvar a conta atualizada
+    ContasModel updatedConta = contasRepository.save(contaExistente);
+    return ResponseEntity.ok(updatedConta);
+}
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
         if (!contasRepository.existsById(id)) {
