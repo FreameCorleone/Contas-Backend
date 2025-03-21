@@ -40,12 +40,6 @@ public class ParcelaController {
 		return parcela;
 	}
 
-	@GetMapping("/buscarporvencimento/{datavencimento}")
-    public ResponseEntity<List<ParcelaModel>> findByParceladatavencimento(@PathVariable LocalDate  datavencimento) {
-		List<ParcelaModel> parcela = parcelaRepository.findByParceladatavencimento(datavencimento);
-        return ResponseEntity.ok(parcela);
-	}
-
 	@GetMapping("/buscarporconta/{idconta}")
     public ResponseEntity<List<ParcelaModel>> findByIdcontas_Idcontas(@PathVariable Long  idconta) {
 		List<ParcelaModel> parcela = parcelaRepository.findByIdcontas_Idcontas(idconta);

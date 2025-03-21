@@ -26,11 +26,6 @@ public class CategoriaController {
     public CategoriaController (CategoriaRepository categoriaRepository){
         this.categoriaRepository = categoriaRepository;
     }
-
-    @GetMapping
-	public String teste() {
-		return "Testando Rota categoria";
-	}
 	
 	@GetMapping("/listall")
 	public List<CategoriaModel> listall() {
@@ -44,24 +39,6 @@ public class CategoriaController {
 		if ( categoria.isPresent() )
 			return categoria.get();
         return null;
-    }
-
-    @GetMapping("buscarpordescricao/{descricao}")
-    public List<CategoriaModel> findByCategoriadescricao(@PathVariable("descricao") String descricao) {
-        List<CategoriaModel> categoria = categoriaRepository.findByCategoriadescricao(descricao);
-        if (categoria.isEmpty()) {
-            return null;
-        }
-        return categoria;
-    }
-
-    @GetMapping("buscarportipo/{tipo}")
-    public List<CategoriaModel> findByTiponumero(@PathVariable("tipo") String tipo) {
-        List<CategoriaModel> categoria = categoriaRepository.findByTipo(tipo);
-        if (categoria.isEmpty()) {
-            return null;
-        }
-        return categoria;
     }
 
     @PostMapping("/salvar")

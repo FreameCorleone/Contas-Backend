@@ -48,54 +48,24 @@ public class ContasController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/buscarportipoconta/{tipoConta}")
-    public ResponseEntity<List<ContasModel>> findByTipoconta(@PathVariable String tipoConta) {
-        return ResponseEntity.ok(contasRepository.findByTipoconta(tipoConta));
-    }
-
-    @GetMapping("/buscarporstatuscontas/{statuscontas}")
-    public ResponseEntity<List<ContasModel>> findByStatuscontas(@PathVariable Boolean statuscontas) {
-        return ResponseEntity.ok(contasRepository.findByStatuscontas(statuscontas));
-    }
-
-    @GetMapping("/buscarporvencimento/{datavencimento}")
-    public ResponseEntity<List<ContasModel>> findByDatavencimento(@PathVariable LocalDate datavencimento) {
-        return ResponseEntity.ok(contasRepository.findByDatavencimento(datavencimento));
-    }
-
-    @GetMapping("/buscarporpagamento/{datapagamento}")
-    public ResponseEntity<List<ContasModel>> findByDatapagamento(@PathVariable LocalDate datapagamento) {
-        return ResponseEntity.ok(contasRepository.findByDatapagamento(datapagamento));
-    }
 
     @GetMapping("/buscarporidusuario/{idusuario}")
     public ResponseEntity<List<ContasModel>> buscarPorUsuario(@PathVariable Long idusuario) {
         return ResponseEntity.ok(contasRepository.findByIdusuarioIdusuario(idusuario));
     }
 
-    @GetMapping("/buscarpornomeusuario/{nome}")
-    public ResponseEntity<List<ContasModel>> buscarPorNome(@PathVariable String nome) {
-        return ResponseEntity.ok(contasRepository.findByIdusuario_Nome(nome));
-    }
 
-    @GetMapping("/buscarporcategoria/{idcategoria}")
-    public ResponseEntity<List<ContasModel>> buscarPorCategoria(@PathVariable Long idcategoria) {
-        return ResponseEntity.ok(contasRepository.findByIdcategoriaIdcategoria(idcategoria));
-    }
 
     @PostMapping("/salvar")
 public ResponseEntity<?> addContas(@RequestBody ContasDTO contasDTO) {
-    // Buscar usuário e categoria pelo ID antes de salvar
     UsuarioModel usuario = usuarioRepository.findById(contasDTO.getIdusuario())
         .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
     CategoriaModel categoria = categoriaRepository.findById(contasDTO.getIdcategoria())
         .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
-    // Converter DTO para Entidade
     ContasModel contas = contasDTO.toEntity(usuario, categoria);
 
-    // Salvar conta
     ContasModel savedContas = contasRepository.save(contas);
     return new ResponseEntity<>(savedContas, HttpStatus.CREATED);
 }
@@ -107,16 +77,13 @@ public ResponseEntity<?> updateContas(@PathVariable Long id, @RequestBody Contas
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada.");
     }
 
-    // Buscar usuário e categoria pelo ID
     UsuarioModel usuario = usuarioRepository.findById(contasDTO.getIdusuario())
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     CategoriaModel categoria = categoriaRepository.findById(contasDTO.getIdcategoria())
             .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
-    // Buscar a conta existente
     ContasModel contaExistente = contasRepository.findById(id).get();
 
-    // Atualizar os campos
     contaExistente.setDescricao(contasDTO.getDescricao());
     contaExistente.setValor(contasDTO.getValor());
     contaExistente.setDatavencimento(contasDTO.getDatavencimento());
@@ -126,7 +93,6 @@ public ResponseEntity<?> updateContas(@PathVariable Long id, @RequestBody Contas
     contaExistente.setIdusuario(usuario);
     contaExistente.setIdcategoria(categoria);
 
-    // Salvar a conta atualizada
     ContasModel updatedConta = contasRepository.save(contaExistente);
     return ResponseEntity.ok(updatedConta);
 }

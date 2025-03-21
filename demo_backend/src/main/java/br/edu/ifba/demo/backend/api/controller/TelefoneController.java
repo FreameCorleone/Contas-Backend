@@ -48,22 +48,6 @@ public class TelefoneController {
         return null;
     }
 
-	@GetMapping("buscarpornumero/{numero}")
-    public TelefoneModel findByTelefonenumero(@PathVariable("numero") String numero) {
-		Optional<TelefoneModel> telefone = telefoneRepository.findByTelefonenumero(numero);
-		if ( telefone.isPresent() )
-			return telefone.get();
-        return null;
-    }
-
-	@GetMapping("buscarportiponumero/{tiponumero}")
-    public List<TelefoneModel> findByTiponumero(@PathVariable("tiponumero") String tiponumero) {
-        List<TelefoneModel> telefones = telefoneRepository.findByTiponumero(tiponumero);
-        if (telefones.isEmpty()) {
-            return null;
-        }
-        return telefones;
-    }
 
     @PostMapping("/salvar")
     public ResponseEntity<TelefoneModel> addTelefone(@RequestBody TelefoneModel telefones) {

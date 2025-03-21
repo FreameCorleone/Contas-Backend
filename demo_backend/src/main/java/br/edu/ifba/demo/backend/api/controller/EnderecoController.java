@@ -35,15 +35,6 @@ public class EnderecoController {
         this.enderecoRepository = enderecoRepository;
     }
 
-
-    @GetMapping
-    public String teste(){
-
-
-        return "Testando rota endereço";
-    }
-
-
     @GetMapping("/listall")
     public List<EnderecoDTO> listall() {
         List<EnderecoModel> endereco = enderecoRepository.findAll();
@@ -57,61 +48,6 @@ public class EnderecoController {
             return endereco.get();
 
         return null;
-    }
-
-    @GetMapping("buscarporestado/{estado}")
-    public EnderecoModel findByEstado(@PathVariable ("estado") String estado){
-        Optional<EnderecoModel> endereco = enderecoRepository.findByEstado(estado);
-        if(endereco.isPresent())
-            return endereco.get();
-
-        return null;
-    }
-
-    @GetMapping("buscarporcidade/{cidade}")
-    public EnderecoModel findByCidade(@PathVariable ("cidade") String cidade){
-        Optional<EnderecoModel> endereco = enderecoRepository.findByCidade(cidade);
-        if(endereco.isPresent())
-            return endereco.get();
-
-        return null;
-    }
-
-    @GetMapping("buscarporbairro/{bairro}")
-    public EnderecoModel findByBairro(@PathVariable ("bairro") String bairro){
-        Optional<EnderecoModel> endereco = enderecoRepository.findByBairro(bairro);
-        if(endereco.isPresent())
-            return endereco.get();
-
-        return null;
-    }
-
-    @GetMapping("buscarporrua/{rua}")
-    public EnderecoModel findByRua(@PathVariable ("rua") String rua){
-        Optional<EnderecoModel> endereco = enderecoRepository.findByRua(rua);
-        if(endereco.isPresent())
-            return endereco.get();
-
-        return null;
-    }
-
-    @GetMapping("buscarpornumero/{numero}")
-    public EnderecoModel findByNumero(@PathVariable ("numero") String numero){
-        Optional<EnderecoModel> endereco = enderecoRepository.findByNumero(numero);
-        if(endereco.isPresent())
-            return endereco.get();
-
-        return null;
-    }
-
-    @GetMapping("/buscarporcep/{cep}")
-    public EnderecoModel findByCep(@PathVariable ("cep") String cep){
-        Optional<EnderecoModel> endereco = enderecoRepository.findByCep(cep);
-        if(endereco.isPresent())
-            return endereco.get();
-        
-            return null;
-        
     }
 
     @PostMapping("/salvar")
